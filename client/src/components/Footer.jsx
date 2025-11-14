@@ -16,10 +16,13 @@ const Footer = () => {
         <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" gutterBottom>
-              Scripted Six
+              TerraCode
             </Typography>
             <Typography variant="body2">
               Connecting tech experts worldwide with companies and clients.
+            </Typography>
+            <Typography variant="caption" sx={{ display: 'block', mt: 1, opacity: 0.8 }}>
+              Developed by Scripted Six
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -41,7 +44,7 @@ const Footer = () => {
               Contact
             </Typography>
             <Typography variant="body2">
-              Email: info@scriptedsix.com
+              Email: info@terracode.com
             </Typography>
             <Typography variant="body2">
               Phone: +1 (555) 123-4567
@@ -50,7 +53,7 @@ const Footer = () => {
         </Grid>
         <Box mt={4}>
           <Typography variant="body2" align="center">
-            © {new Date().getFullYear()} Scripted Six. All rights reserved.
+            © {new Date().getFullYear()} TerraCode by Scripted Six. All rights reserved.
           </Typography>
         </Box>
       </Container>

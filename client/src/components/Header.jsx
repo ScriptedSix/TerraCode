@@ -66,7 +66,7 @@ const Header = () => {
             },
           }}
         >
-          Scripted Six
+          TerraCode
         </Typography>
 
         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
