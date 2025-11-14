@@ -144,10 +144,24 @@ export default function Signin() {
           Forgot Password
         </Link>
 
-        {/* Signup Link */}
-        <Link href="#" underline="hover" sx={styles.link}>
-          New to TerraCode? Create an Account
-        </Link>
+        {/* Signup link */}
+        <Typography variant="body2" sx={{ color: "#6b7280", fontSize: "0.875rem" }}>
+            New to the TerraCode?{"  "}
+            <Typography
+                component="a"
+                href="/signup"
+                sx={{
+                color: "#1e3a8a",
+                fontWeight: 600,
+                textDecoration: "none",
+                "&:hover": {
+                    textDecoration: "underline",
+                },
+            }}
+            >
+            Sign Up
+            </Typography>
+        </Typography>
       </Card>
     </Box>
   );
