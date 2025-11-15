@@ -1,6 +1,6 @@
 const create = async(user) => {
     try {
-        let response = await fetch('/api/users/', {
+        let response = await fetch('api/auth/register', { 
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -11,8 +11,10 @@ const create = async(user) => {
         return await response.json()
     } catch (err) {
         console.log(err)
+        return { error: 'Network error occurred' }
     }
 }
+
 const list = async(signal) => {
     try {
         let response = await fetch('/api/users/', {
@@ -22,8 +24,10 @@ const list = async(signal) => {
         return await response.json()
     } catch (err) {
         console.log(err)
+        return { error: 'Network error occurred' }
     }
 }
+
 const read = async(params, credentials, signal) => {
     try {
         let response = await fetch('/api/users/' + params.userId, {
@@ -38,8 +42,10 @@ const read = async(params, credentials, signal) => {
         return await response.json()
     } catch (err) {
         console.log(err)
+        return { error: 'Network error occurred' }
     }
 }
+
 const update = async(params, credentials, user) => {
     try {
         let response = await fetch('/api/users/' + params.userId, {
@@ -54,8 +60,10 @@ const update = async(params, credentials, user) => {
         return await response.json()
     } catch (err) {
         console.log(err)
+        return { error: 'Network error occurred' }
     }
 }
+
 const remove = async(params, credentials) => {
     try {
         let response = await fetch('/api/users/' + params.userId, {
@@ -69,6 +77,8 @@ const remove = async(params, credentials) => {
         return await response.json()
     } catch (err) {
         console.log(err)
+        return { error: 'Network error occurred' }
     }
 }
+
 export { create, list, read, update, remove }

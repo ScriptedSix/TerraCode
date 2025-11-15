@@ -5,13 +5,11 @@ import {
   Grid,
   Card,
   CardContent,
-  CardMedia,
   CardActions,
   Button,
   Box,
   Chip,
   TextField,
-  Rating,
   Avatar,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -20,95 +18,50 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import LanguageIcon from '@mui/icons-material/Language';
 import Loading from '../components/Loading';
+import { list } from '../api/api-portfolio';
 
 const Portfolios = () => {
-  const [portfolios, setPortfolios] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [skillFilter, setSkillFilter] = useState('');
 
   useEffect(() => {
-    fetchPortfolios();
+    fetchUsers();
   }, []);
 
-  const fetchPortfolios = async () => {
+  const fetchUsers = async () => {
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/portfolios');
-      // const data = await response.json();
+      const abortController = new AbortController();
+      const signal = abortController.signal;
+
+      const data = await list(signal);
       
-      // Mock data
-      const mockPortfolios = [
-        {
-          _id: '1',
-          user: {
-            name: 'John Doe',
-            avatar: '',
-          },
-          title: 'Full Stack Developer',
-          bio: 'Passionate developer with 5+ years of experience in building web applications',
-          skills: ['React', 'Node.js', 'MongoDB', 'AWS'],
-          projects: [
-            { name: 'E-commerce Platform', description: 'Built a full-featured online store' },
-            { name: 'Task Manager App', description: 'Real-time task management system' },
-          ],
-          github: 'https://github.com/johndoe',
-          linkedin: 'https://linkedin.com/in/johndoe',
-          website: 'https://johndoe.dev',
-        },
-        {
-          _id: '2',
-          user: {
-            name: 'Jane Smith',
-            avatar: '',
-          },
-          title: 'Frontend Specialist',
-          bio: 'UI/UX enthusiast creating beautiful and responsive web interfaces',
-          skills: ['React', 'TypeScript', 'Tailwind CSS', 'Figma'],
-          projects: [
-            { name: 'Dashboard Design', description: 'Modern analytics dashboard' },
-            { name: 'Portfolio Website', description: 'Interactive portfolio showcase' },
-          ],
-          github: 'https://github.com/janesmith',
-          linkedin: 'https://linkedin.com/in/janesmith',
-          website: 'https://janesmith.com',
-        },
-        {
-          _id: '3',
-          user: {
-            name: 'Mike Johnson',
-            avatar: '',
-          },
-          title: 'Backend Engineer',
-          bio: 'Specializing in scalable microservices and cloud architecture',
-          skills: ['Python', 'Django', 'PostgreSQL', 'Docker', 'Kubernetes'],
-          projects: [
-            { name: 'API Gateway', description: 'High-performance API management system' },
-            { name: 'Data Pipeline', description: 'ETL pipeline for big data processing' },
-          ],
-          github: 'https://github.com/mikejohnson',
-          linkedin: 'https://linkedin.com/in/mikejohnson',
-          website: '',
-        },
-      ];
-      
-      setPortfolios(mockPortfolios);
+      if (data && data.users) {
+        // Filter only developers
+        const developers = data.users.filter(user => user.role === 'developer');
+        setUsers(developers);
+      } else if (Array.isArray(data)) {
+        const developers = data.filter(user => user.role === 'developer');
+        setUsers(developers);
+      }
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching portfolios:', error);
+      console.error('Error fetching users:', error);
       setLoading(false);
     }
   };
 
-  const filteredPortfolios = portfolios.filter((portfolio) => {
+  const filteredUsers = users.filter((user) => {
     const matchesSearch = 
-      portfolio.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      portfolio.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      portfolio.bio.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesSkill = !skillFilter || portfolio.skills.some(skill => 
-      skill.toLowerCase().includes(skillFilter.toLowerCase())
-    );
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.profile?.bio && user.profile.bio.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesSkill = !skillFilter || 
+      (user.profile?.skills && user.profile.skills.some(skill => 
+        skill.toLowerCase().includes(skillFilter.toLowerCase())
+      ));
     
     return matchesSearch && matchesSkill;
   });
@@ -150,112 +103,120 @@ const Portfolios = () => {
         </Grid>
       </Box>
 
-      {/* Portfolio Cards */}
+      {/* User Cards */}
       <Grid container spacing={3}>
-        {filteredPortfolios.map((portfolio) => (
-          <Grid item xs={12} md={6} lg={4} key={portfolio._id}>
-            <Card sx={{ 
-              height: '100%', 
-              display: 'flex', 
-              flexDirection: 'column',
-              borderRadius: 2,
-              transition: 'all 0.3s ease',
-              '&:hover': { 
-                boxShadow: '0 12px 28px rgba(102, 126, 234, 0.25)',
-                transform: 'translateY(-8px)',
-              },
-            }}>
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Avatar sx={{ width: 60, height: 60, mr: 2, bgcolor: 'primary.main' }}>
-                    {portfolio.user.avatar ? (
-                      <img src={portfolio.user.avatar} alt={portfolio.user.name} />
-                    ) : (
-                      <PersonIcon fontSize="large" />
-                    )}
-                  </Avatar>
-                  <Box>
-                    <Typography variant="h6" fontWeight="bold">
-                      {portfolio.user.name}
-                    </Typography>
+        {filteredUsers.length > 0 ? (
+          filteredUsers.map((user) => (
+            <Grid item xs={12} md={6} lg={4} key={user._id}>
+              <Card sx={{ 
+                height: '100%', 
+                display: 'flex', 
+                flexDirection: 'column',
+                borderRadius: 2,
+                transition: 'all 0.3s ease',
+                '&:hover': { 
+                  boxShadow: '0 12px 28px rgba(102, 126, 234, 0.25)',
+                  transform: 'translateY(-8px)',
+                },
+              }}>
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Avatar sx={{ width: 60, height: 60, mr: 2, bgcolor: 'primary.main' }}>
+                      {user.profile?.profilePicture ? (
+                        <img src={user.profile.profilePicture} alt={user.name} />
+                      ) : (
+                        <PersonIcon fontSize="large" />
+                      )}
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h6" fontWeight="bold">
+                        {user.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {user.role}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Typography variant="body2" paragraph>
+                    {user.profile?.bio || 'No bio available'}
+                  </Typography>
+
+                  {user.profile?.skills && user.profile.skills.length > 0 && (
+                    <Box sx={{ mb: 2 }}>
+                      <Typography variant="subtitle2" gutterBottom>
+                        Skills:
+                      </Typography>
+                      <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                        {user.profile.skills.slice(0, 5).map((skill, index) => (
+                          <Chip key={index} label={skill} size="small" color="primary" variant="outlined" />
+                        ))}
+                        {user.profile.skills.length > 5 && (
+                          <Chip label={`+${user.profile.skills.length - 5}`} size="small" variant="outlined" />
+                        )}
+                      </Box>
+                    </Box>
+                  )}
+
+                  {user.profile?.location && (
                     <Typography variant="body2" color="text.secondary">
-                      {portfolio.title}
+                      📍 {user.profile.location}
                     </Typography>
+                  )}
+                </CardContent>
+
+                <CardActions sx={{ px: 2, pb: 2 }}>
+                  <Box sx={{ display: 'flex', gap: 1, width: '100%', justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      {user.profile?.github && (
+                        <Button
+                          size="small"
+                          href={user.profile.github}
+                          target="_blank"
+                          startIcon={<GitHubIcon />}
+                        >
+                          GitHub
+                        </Button>
+                      )}
+                      {user.profile?.linkedin && (
+                        <Button
+                          size="small"
+                          href={user.profile.linkedin}
+                          target="_blank"
+                          startIcon={<LinkedInIcon />}
+                        >
+                          LinkedIn
+                        </Button>
+                      )}
+                    </Box>
+                    <Button
+                      component={Link}
+                      to={`/portfolios/${user._id}`}
+                      variant="contained"
+                      size="small"
+                      sx={{
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        '&:hover': {
+                          background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                          transform: 'scale(1.05)',
+                        },
+                        transition: 'all 0.3s ease',
+                      }}
+                    >
+                      View Profile
+                    </Button>
                   </Box>
-                </Box>
-
-                <Typography variant="body2" paragraph>
-                  {portfolio.bio}
-                </Typography>
-
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    Skills:
-                  </Typography>
-                  <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                    {portfolio.skills.map((skill, index) => (
-                      <Chip key={index} label={skill} size="small" color="primary" variant="outlined" />
-                    ))}
-                  </Box>
-                </Box>
-
-                <Box>
-                  <Typography variant="subtitle2" gutterBottom>
-                    Featured Projects:
-                  </Typography>
-                  {portfolio.projects.slice(0, 2).map((project, index) => (
-                    <Typography key={index} variant="body2" color="text.secondary">
-                      • {project.name}
-                    </Typography>
-                  ))}
-                </Box>
-              </CardContent>
-
-              <CardActions sx={{ px: 2, pb: 2 }}>
-                <Box sx={{ display: 'flex', gap: 1, width: '100%', justifyContent: 'space-between' }}>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    {portfolio.github && (
-                      <Button
-                        size="small"
-                        href={portfolio.github}
-                        target="_blank"
-                        startIcon={<GitHubIcon />}
-                      >
-                        GitHub
-                      </Button>
-                    )}
-                    {portfolio.linkedin && (
-                      <Button
-                        size="small"
-                        href={portfolio.linkedin}
-                        target="_blank"
-                        startIcon={<LinkedInIcon />}
-                      >
-                        LinkedIn
-                      </Button>
-                    )}
-                  </Box>
-                  <Button
-                    component={Link}
-                    to={`/portfolios/${portfolio._id}`}
-                    variant="contained"
-                    size="small"
-                    sx={{
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      '&:hover': {
-                        background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
-                        transform: 'scale(1.05)',
-                      },
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    View Portfolio
-                  </Button>
-                </Box>
-              </CardActions>
-            </Card>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <Typography variant="h6" textAlign="center" color="text.secondary">
+              No developers found
+            </Typography>
           </Grid>
-        ))}
+        )}
       </Grid>
     </Container>
   );
