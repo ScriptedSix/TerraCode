@@ -6,7 +6,8 @@ const {
   getJobById,
   updateJob,
   deleteJob,
-  getJobsByCompany
+  getJobsByCompany,
+  adminDeleteJob
 } = require('../controllers/job.controller');
 const { verifyToken, authorize } = require('../middleware/auth.middleware');
 
@@ -19,5 +20,8 @@ router.get('/company/:companyId', getJobsByCompany);
 router.post('/', verifyToken, authorize('company'), createJob);
 router.put('/:id', verifyToken, updateJob);
 router.delete('/:id', verifyToken, deleteJob);
+
+// Admin routes
+router.delete('/admin/:id', verifyToken, authorize('admin'), adminDeleteJob);
 
 module.exports = router;

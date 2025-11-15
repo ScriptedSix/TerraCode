@@ -19,6 +19,8 @@ app.use('/api/users', require('./routes/user.routes'));
 app.use('/api/portfolio', require('./routes/portfolio.routes'));
 app.use('/api/jobs', require('./routes/job.routes'));
 app.use('/api/applications', require('./routes/application.routes'));
+app.use('/uploads', express.static('uploads'));
+
 
 // Test route
 app.get('/', (req, res) => {

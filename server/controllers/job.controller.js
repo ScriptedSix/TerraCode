@@ -25,12 +25,49 @@ exports.createJob = async (req, res) => {
   }
 };
 
-// @desc    Get all jobs
+// @desc    Get all jobs with search and filters
 // @route   GET /api/jobs
 // @access  Public
 exports.getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find({ status: 'active' })
+    const { search, location, jobType, experienceLevel, skills, status } = req.query;
+
+    // Build query object
+    let query = {};
+
+    // Search by title or description
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    // Filter by location
+    if (location) {
+      query.location = { $regex: location, $options: 'i' };
+    }
+
+    // Filter by job type
+    if (jobType) {
+      query.jobType = jobType;
+    }
+
+    // Filter by experience level
+    if (experienceLevel) {
+      query.experienceLevel = experienceLevel;
+    }
+
+    // Filter by skills
+    if (skills) {
+      const skillsArray = skills.split(',').map(skill => skill.trim());
+      query.skills = { $in: skillsArray };
+    }
+
+    // Filter by status (default to active only)
+    query.status = status || 'active';
+
+    const jobs = await Job.find(query)
       .populate('company', 'name email companyInfo')
       .sort('-postedAt');
 
@@ -133,6 +170,26 @@ exports.getJobsByCompany = async (req, res) => {
       count: jobs.length,
       jobs
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// @desc    Delete any job (Admin only)
+// @route   DELETE /api/jobs/admin/:id
+// @access  Private (Admin only)
+exports.adminDeleteJob = async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    await job.deleteOne();
+
+    res.status(200).json({ message: 'Job deleted successfully by admin' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error', error: error.message });
