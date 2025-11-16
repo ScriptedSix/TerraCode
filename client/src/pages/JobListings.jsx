@@ -16,13 +16,18 @@ import {
   InputLabel,
   Paper,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import auth from '../user/auth-helper';
 import WorkIcon from '@mui/icons-material/Work';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Loading from '../components/Loading';
 
 const JobListings = () => {
+  const navigate = useNavigate();
+  const jwt = auth.isAuthenticated();
+  const userRole = jwt?.user?.role;
+
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,9 +55,10 @@ const JobListings = () => {
           company: 'Tech Corp',
           location: 'Remote',
           jobType: 'Full-time',
+          workMode: 'Remote',
           salary: '$100k - $150k',
           skills: ['React', 'Node.js', 'MongoDB'],
-          description: 'Looking for an experienced full stack developer...',
+          description: 'Looking for an experienced full stack developer to join our growing team...',
           postedDate: new Date('2024-11-01'),
         },
         {
@@ -61,9 +67,10 @@ const JobListings = () => {
           company: 'StartUp Inc',
           location: 'New York, NY',
           jobType: 'Contract',
+          workMode: 'Hybrid',
           salary: '$80k - $120k',
           skills: ['React', 'TypeScript', 'CSS'],
-          description: 'Join our team to build amazing user interfaces...',
+          description: 'Join our team to build amazing user interfaces for modern web apps...',
           postedDate: new Date('2024-11-05'),
         },
         {
@@ -72,9 +79,10 @@ const JobListings = () => {
           company: 'Cloud Solutions',
           location: 'San Francisco, CA',
           jobType: 'Full-time',
+          workMode: 'On-site',
           salary: '$120k - $180k',
           skills: ['Python', 'AWS', 'Docker'],
-          description: 'Build scalable backend services...',
+          description: 'Build scalable backend services that power millions of users...',
           postedDate: new Date('2024-11-10'),
         },
       ];
@@ -105,11 +113,20 @@ const JobListings = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h3" gutterBottom fontWeight="bold">
-        Browse Jobs
+      <Typography 
+        variant="h3" 
+        gutterBottom 
+        fontWeight="bold"
+        sx={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}
+      >
+        Find Your Dream Job
       </Typography>
       <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
-        Find your next opportunity from {jobs.length} available positions
+        Discover {jobs.length} opportunities waiting for you
       </Typography>
 
       {/* Filter Section */}
@@ -200,17 +217,28 @@ const JobListings = () => {
 
                   <Box sx={{ display: 'flex', gap: 3, mb: 2, flexWrap: 'wrap' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      <LocationOnIcon fontSize="small" color="action" />
-                      <Typography variant="body2" color="text.secondary">
+                      <LocationOnIcon fontSize="small" sx={{ color: '#667eea' }} />
+                      <Typography variant="body2" color="text.secondary" fontWeight={500}>
                         {job.location}
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      <AttachMoneyIcon fontSize="small" color="action" />
-                      <Typography variant="body2" color="text.secondary">
+                      <AttachMoneyIcon fontSize="small" sx={{ color: '#667eea' }} />
+                      <Typography variant="body2" color="text.secondary" fontWeight={500}>
                         {job.salary}
                       </Typography>
                     </Box>
+                    {job.workMode && (
+                      <Chip 
+                        label={job.workMode} 
+                        size="small" 
+                        sx={{ 
+                          bgcolor: 'rgba(102, 126, 234, 0.1)',
+                          color: '#667eea',
+                          fontWeight: 600,
+                        }}
+                      />
+                    )}
                   </Box>
 
                   <Typography variant="body1" sx={{ mb: 2 }}>
@@ -228,18 +256,21 @@ const JobListings = () => {
                     component={Link}
                     to={`/jobs/${job._id}`}
                     variant="contained"
+                    size="large"
                     sx={{ 
                       ml: 1, 
                       mb: 1,
+                      px: 4,
                       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                       '&:hover': {
                         background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
                         transform: 'scale(1.05)',
+                        boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
                       },
                       transition: 'all 0.3s ease',
                     }}
                   >
-                    View Details
+                    View Details & Apply
                   </Button>
                 </CardActions>
               </Card>

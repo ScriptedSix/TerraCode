@@ -70,13 +70,13 @@ export default function Signup() {
     <Box sx={styles.container}>
       {/* Close button */}
       <IconButton
+        onClick={() => navigate('/')}
         sx={{
           position: "absolute",
           top: 24,
           left: 24,
           color: "#1f2937",
         }}
-        onClick={() => navigate('/')}
       >
         <CloseIcon />
       </IconButton>

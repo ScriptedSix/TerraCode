@@ -25,6 +25,9 @@ import auth from '../user/auth-helper';
 const JobDetails = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
+  const jwt = auth.isAuthenticated();
+  const userRole = jwt?.user?.role;
+  
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
@@ -206,28 +209,38 @@ const JobDetails = () => {
 
         <Divider sx={{ my: 3 }} />
 
-        <Box sx={{ textAlign: 'center' }}>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={handleApply}
-            sx={{ 
-              px: 6, 
-              py: 1.5,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              fontWeight: 'bold',
-              fontSize: '1.1rem',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
-                transform: 'scale(1.05)',
-                boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
-              },
-              transition: 'all 0.3s ease',
-            }}
-          >
-            Apply Now
-          </Button>
-        </Box>
+        {userRole !== 'company' && (
+          <Box sx={{ textAlign: 'center' }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleApply}
+              sx={{ 
+                px: 6, 
+                py: 1.5,
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                fontWeight: 'bold',
+                fontSize: '1.1rem',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                  transform: 'scale(1.05)',
+                  boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+              Apply Now
+            </Button>
+          </Box>
+        )}
+
+        {userRole === 'company' && (
+          <Box sx={{ textAlign: 'center', py: 3 }}>
+            <Typography variant="h6" color="text.secondary">
+              Companies cannot apply to jobs
+            </Typography>
+          </Box>
+        )}
       </Paper>
 
       {/* Application Dialog */}

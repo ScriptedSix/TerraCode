@@ -1,6 +1,6 @@
 const list = async(signal) => {
     try {
-        const response = await fetch('/api/users/', {
+        const response = await fetch('/api/portfolio/', {
             method: 'GET',
             signal: signal,
         });

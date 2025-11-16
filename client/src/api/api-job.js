@@ -8,6 +8,7 @@ const listJobs = async (signal) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
@@ -20,6 +21,7 @@ const readJob = async (params, signal) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
@@ -37,6 +39,7 @@ const createJob = async (credentials, job) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
@@ -54,6 +57,7 @@ const updateJob = async (params, credentials, job) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
@@ -70,18 +74,20 @@ const removeJob = async (params, credentials) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
 const searchJobs = async (query, signal) => {
   try {
-    const response = await fetch('/api/jobs/search?' + new URLSearchParams(query), {
+    const response = await fetch('/api/jobs?' + new URLSearchParams(query), {
       method: 'GET',
       signal: signal,
     });
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 

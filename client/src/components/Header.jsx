@@ -9,7 +9,9 @@ import logo from '../static/logo.jpg';
 const Header = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const isAuthenticated = auth.isAuthenticated();
+  const jwt = auth.isAuthenticated();
+  const isAuthenticated = !!jwt;
+  const userRole = jwt?.user?.role;
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -70,10 +72,11 @@ const Header = () => {
         </Typography>
 
         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+          {/* Show Jobs for everyone */}
           <Button 
             color="inherit" 
             component={Link} 
-            to="/jobs"
+            to={userRole === 'company' ? '/portfolios' : '/jobs'}
             sx={{
               '&:hover': {
                 bgcolor: 'rgba(255,255,255,0.15)',
@@ -82,21 +85,7 @@ const Header = () => {
               transition: 'all 0.3s ease',
             }}
           >
-            Browse Jobs
-          </Button>
-          <Button 
-            color="inherit" 
-            component={Link} 
-            to="/portfolios"
-            sx={{
-              '&:hover': {
-                bgcolor: 'rgba(255,255,255,0.15)',
-                transform: 'translateY(-2px)',
-              },
-              transition: 'all 0.3s ease',
-            }}
-          >
-            Portfolios
+            {userRole === 'company' ? 'Browse Talent' : 'Browse Jobs'}
           </Button>
           
           {isAuthenticated ? (
@@ -104,7 +93,7 @@ const Header = () => {
               <Button 
                 color="inherit" 
                 component={Link} 
-                to="/dashboard"
+                to={userRole === 'company' ? '/employer-dashboard' : '/dashboard'}
                 sx={{
                   '&:hover': {
                     bgcolor: 'rgba(255,255,255,0.15)',
@@ -196,15 +185,12 @@ const Header = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose} component={Link} to="/jobs">
-              Browse Jobs
-            </MenuItem>
-            <MenuItem onClick={handleClose} component={Link} to="/portfolios">
-              Portfolios
+            <MenuItem onClick={handleClose} component={Link} to={userRole === 'company' ? '/portfolios' : '/jobs'}>
+              {userRole === 'company' ? 'Browse Talent' : 'Browse Jobs'}
             </MenuItem>
             {isAuthenticated ? (
               <>
-                <MenuItem onClick={handleClose} component={Link} to="/dashboard">
+                <MenuItem onClick={handleClose} component={Link} to={userRole === 'company' ? '/employer-dashboard' : '/dashboard'}>
                   Dashboard
                 </MenuItem>
                 <MenuItem onClick={handleClose} component={Link} to="/profile">

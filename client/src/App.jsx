@@ -124,7 +124,7 @@ function App() {
               {/* Protected Routes */}
               <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
               <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-              <Route path="/employer/dashboard" element={<PrivateRoute><EmployerDashboard /></PrivateRoute>} />
+              <Route path="/employer-dashboard" element={<PrivateRoute><EmployerDashboard /></PrivateRoute>} />
             </Routes>
           </main>
           <Footer />

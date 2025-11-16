@@ -12,9 +12,21 @@ import {
   Divider,
   Alert,
   CircularProgress,
+  Card,
+  CardContent,
+  IconButton,
+  Stack,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonIcon from '@mui/icons-material/Person';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import LanguageIcon from '@mui/icons-material/Language';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import EmailIcon from '@mui/icons-material/Email';
+import BusinessIcon from '@mui/icons-material/Business';
+import CodeIcon from '@mui/icons-material/Code';
+import WorkIcon from '@mui/icons-material/Work';
 import auth from '../user/auth-helper';
 import { read, update } from '../api/api-user';
 
@@ -199,20 +211,103 @@ const Profile = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-          <Typography variant="h4" fontWeight="bold">
-            My Profile
-          </Typography>
-          {!editing && (
-            <Button variant="contained" startIcon={<EditIcon />} onClick={() => setEditing(true)}>
-              Edit Profile
-            </Button>
-          )}
-        </Box>
-
-        <Divider sx={{ mb: 3 }} />
+    <Box sx={{ 
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      py: 6
+    }}>
+      <Container maxWidth="lg">
+        {/* Header Card */}
+        <Card 
+          elevation={8}
+          sx={{ 
+            mb: 3,
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+            }
+          }}
+        >
+          <CardContent sx={{ p: 4, position: 'relative', zIndex: 1 }}>
+            <Grid container spacing={3} alignItems="center">
+              <Grid item>
+                <Avatar
+                  sx={{
+                    width: 120,
+                    height: 120,
+                    bgcolor: 'rgba(255,255,255,0.2)',
+                    border: '4px solid rgba(255,255,255,0.3)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                  }}
+                >
+                  {profile.role === 'company' ? (
+                    <BusinessIcon sx={{ fontSize: 60 }} />
+                  ) : (
+                    <CodeIcon sx={{ fontSize: 60 }} />
+                  )}
+                </Avatar>
+              </Grid>
+              <Grid item xs>
+                <Typography variant="h3" fontWeight="bold" gutterBottom>
+                  {profile.name}
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 2 }}>
+                  <Chip 
+                    icon={profile.role === 'company' ? <BusinessIcon /> : <CodeIcon />}
+                    label={profile.role === 'company' ? 'Company' : 'Developer'} 
+                    sx={{ 
+                      bgcolor: 'rgba(255,255,255,0.2)',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      backdropFilter: 'blur(10px)'
+                    }} 
+                  />
+                  {profile.profile.location && (
+                    <Chip 
+                      icon={<LocationOnIcon />}
+                      label={profile.profile.location} 
+                      sx={{ 
+                        bgcolor: 'rgba(255,255,255,0.2)',
+                        color: 'white',
+                        backdropFilter: 'blur(10px)'
+                      }} 
+                    />
+                  )}
+                </Box>
+                <Typography variant="body1" sx={{ opacity: 0.9, maxWidth: '600px' }}>
+                  {profile.profile.bio || 'No bio added yet'}
+                </Typography>
+              </Grid>
+              <Grid item>
+                {!editing && (
+                  <Button 
+                    variant="contained" 
+                    startIcon={<EditIcon />} 
+                    onClick={() => setEditing(true)}
+                    sx={{
+                      bgcolor: 'white',
+                      color: '#667eea',
+                      '&:hover': {
+                        bgcolor: 'rgba(255,255,255,0.9)',
+                      }
+                    }}
+                  >
+                    Edit Profile
+                  </Button>
+                )}
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
 
         {error && (
           <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError('')}>
@@ -226,178 +321,382 @@ const Profile = () => {
         )}
 
         <Grid container spacing={3}>
-          {/* Left column - Avatar */}
+          {/* Left Column - Contact & Links */}
           <Grid item xs={12} md={4}>
-            <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Avatar
-                sx={{
-                  width: 150,
-                  height: 150,
-                  mx: 'auto',
-                  mb: 2,
-                  bgcolor: 'primary.main',
-                }}
-              >
-                <PersonIcon sx={{ fontSize: 80 }} />
-              </Avatar>
+            <Stack spacing={3}>
+              {/* Contact Information */}
+              <Card elevation={4}>
+                <CardContent>
+                  <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <EmailIcon color="primary" />
+                    Contact Information
+                  </Typography>
+                  <Divider sx={{ my: 2 }} />
+                  
+                  <Stack spacing={2}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <EmailIcon color="action" fontSize="small" />
+                      {editing ? (
+                        <TextField
+                          fullWidth
+                          size="small"
+                          value={formData.email}
+                          onChange={handleChange}
+                          name="email"
+                        />
+                      ) : (
+                        <Typography variant="body2" color="text.secondary">
+                          {profile.email}
+                        </Typography>
+                      )}
+                    </Box>
 
-              {editing && (
-                <Button variant="outlined" size="small">
-                  Change Photo
-                </Button>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <LocationOnIcon color="action" fontSize="small" />
+                      {editing ? (
+                        <TextField
+                          fullWidth
+                          size="small"
+                          placeholder="Location"
+                          value={formData.profile.location}
+                          onChange={handleChange}
+                          name="location"
+                        />
+                      ) : (
+                        <Typography variant="body2" color="text.secondary">
+                          {profile.profile.location || 'Not specified'}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Stack>
+                </CardContent>
+              </Card>
+
+              {/* Professional Links */}
+              <Card elevation={4}>
+                <CardContent>
+                  <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LanguageIcon color="primary" />
+                    Professional Links
+                  </Typography>
+                  <Divider sx={{ my: 2 }} />
+
+                  <Stack spacing={2}>
+                    {editing ? (
+                      <>
+                        <TextField
+                          fullWidth
+                          size="small"
+                          label="GitHub URL"
+                          name="github"
+                          value={formData.profile.github}
+                          onChange={handleChange}
+                          InputProps={{
+                            startAdornment: <GitHubIcon sx={{ mr: 1, color: 'action.active' }} />
+                          }}
+                        />
+                        <TextField
+                          fullWidth
+                          size="small"
+                          label="LinkedIn URL"
+                          name="linkedin"
+                          value={formData.profile.linkedin}
+                          onChange={handleChange}
+                          InputProps={{
+                            startAdornment: <LinkedInIcon sx={{ mr: 1, color: 'action.active' }} />
+                          }}
+                        />
+                        <TextField
+                          fullWidth
+                          size="small"
+                          label="Portfolio/Website URL"
+                          name="portfolio"
+                          value={formData.profile.portfolio}
+                          onChange={handleChange}
+                          InputProps={{
+                            startAdornment: <LanguageIcon sx={{ mr: 1, color: 'action.active' }} />
+                          }}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {profile.profile.github && (
+                          <Button
+                            fullWidth
+                            variant="outlined"
+                            startIcon={<GitHubIcon />}
+                            href={profile.profile.github}
+                            target="_blank"
+                            sx={{ justifyContent: 'flex-start' }}
+                          >
+                            GitHub
+                          </Button>
+                        )}
+                        {profile.profile.linkedin && (
+                          <Button
+                            fullWidth
+                            variant="outlined"
+                            startIcon={<LinkedInIcon />}
+                            href={profile.profile.linkedin}
+                            target="_blank"
+                            sx={{ justifyContent: 'flex-start' }}
+                          >
+                            LinkedIn
+                          </Button>
+                        )}
+                        {profile.profile.portfolio && (
+                          <Button
+                            fullWidth
+                            variant="outlined"
+                            startIcon={<LanguageIcon />}
+                            href={profile.profile.portfolio}
+                            target="_blank"
+                            sx={{ justifyContent: 'flex-start' }}
+                          >
+                            Portfolio
+                          </Button>
+                        )}
+                        {!profile.profile.github && !profile.profile.linkedin && !profile.profile.portfolio && (
+                          <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
+                            No links added yet
+                          </Typography>
+                        )}
+                      </>
+                    )}
+                  </Stack>
+                </CardContent>
+              </Card>
+
+              {/* Skills for Developers */}
+              {profile.role === 'developer' && (
+                <Card elevation={4}>
+                  <CardContent>
+                    <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <CodeIcon color="primary" />
+                      Skills
+                    </Typography>
+                    <Divider sx={{ my: 2 }} />
+
+                    {editing ? (
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={3}
+                        size="small"
+                        label="Skills (comma-separated)"
+                        value={formData.profile.skills.join(', ')}
+                        onChange={handleSkillsChange}
+                        placeholder="React, Node.js, Python, etc."
+                      />
+                    ) : (
+                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                        {profile.profile.skills.length > 0 ? (
+                          profile.profile.skills.map((skill, i) => (
+                            <Chip 
+                              key={i} 
+                              label={skill} 
+                              size="small"
+                              sx={{
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                color: 'white',
+                                fontWeight: 500
+                              }}
+                            />
+                          ))
+                        ) : (
+                          <Typography variant="body2" color="text.secondary">
+                            No skills added yet
+                          </Typography>
+                        )}
+                      </Box>
+                    )}
+                  </CardContent>
+                </Card>
               )}
-            </Box>
+            </Stack>
           </Grid>
 
-          {/* Right column - Profile fields */}
+          {/* Right Column - Details */}
           <Grid item xs={12} md={8}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  disabled={!editing}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  disabled={!editing}
-                />
-              </Grid>
+            <Stack spacing={3}>
+              {/* About Section */}
+              <Card elevation={4}>
+                <CardContent>
+                  <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <PersonIcon color="primary" />
+                    {profile.role === 'company' ? 'Company Information' : 'About Me'}
+                  </Typography>
+                  <Divider sx={{ my: 2 }} />
 
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Location"
-                  name="location"
-                  value={formData.profile.location}
-                  onChange={handleChange}
-                  disabled={!editing}
-                />
-              </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        disabled={!editing}
+                        variant={editing ? "outlined" : "standard"}
+                        InputProps={{ readOnly: !editing }}
+                      />
+                    </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <TextField fullWidth label="Role" name="role" value={formData.role} disabled />
-              </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={4}
+                        label={profile.role === 'company' ? 'Company Description' : 'Bio'}
+                        name="bio"
+                        value={formData.profile.bio}
+                        onChange={handleChange}
+                        disabled={!editing}
+                        variant={editing ? "outlined" : "standard"}
+                        InputProps={{ readOnly: !editing }}
+                        placeholder={profile.role === 'company' ? 'Tell us about your company...' : 'Tell us about yourself...'}
+                      />
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
 
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={3}
-                  label="Bio"
-                  name="bio"
-                  value={formData.profile.bio}
-                  onChange={handleChange}
-                  disabled={!editing}
-                />
-              </Grid>
+              {/* Experience Section for Developers */}
+              {profile.role === 'developer' && (
+                <Card elevation={4}>
+                  <CardContent>
+                    <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <WorkIcon color="primary" />
+                      Experience
+                    </Typography>
+                    <Divider sx={{ my: 2 }} />
 
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={2}
-                  label="Experience"
-                  name="experience"
-                  value={formData.profile.experience}
-                  onChange={handleChange}
-                  disabled={!editing}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-
-          {/* Professional Links */}
-          <Grid item xs={12}>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="h6">Professional Links</Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  fullWidth
-                  label="GitHub URL"
-                  name="github"
-                  value={formData.profile.github}
-                  onChange={handleChange}
-                  disabled={!editing}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <TextField
-                  fullWidth
-                  label="LinkedIn URL"
-                  name="linkedin"
-                  value={formData.profile.linkedin}
-                  onChange={handleChange}
-                  disabled={!editing}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <TextField
-                  fullWidth
-                  label="Portfolio URL"
-                  name="portfolio"
-                  value={formData.profile.portfolio}
-                  onChange={handleChange}
-                  disabled={!editing}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-
-          {/* Skills for developers only */}
-          {profile.role === 'developer' && (
-            <Grid item xs={12}>
-              <Divider sx={{ my: 2 }} />
-              <Typography variant="h6">Skills</Typography>
-
-              {!editing ? (
-                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                  {profile.profile.skills.length > 0 ? (
-                    profile.profile.skills.map((skill, i) => (
-                      <Chip key={i} label={skill} color="primary" />
-                    ))
-                  ) : (
-                    <Typography color="text.secondary">No skills added yet</Typography>
-                  )}
-                </Box>
-              ) : (
-                <TextField
-                  fullWidth
-                  label="Skills (comma-separated)"
-                  value={formData.profile.skills.join(', ')}
-                  onChange={handleSkillsChange}
-                />
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={6}
+                      label="Professional Experience"
+                      name="experience"
+                      value={formData.profile.experience}
+                      onChange={handleChange}
+                      disabled={!editing}
+                      variant={editing ? "outlined" : "standard"}
+                      InputProps={{ readOnly: !editing }}
+                      placeholder="Describe your work experience, projects, achievements..."
+                    />
+                  </CardContent>
+                </Card>
               )}
-            </Grid>
-          )}
-        </Grid>
 
-        {/* Save / Cancel Buttons */}
-        {editing && (
-          <Box sx={{ mt: 3, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-            <Button variant="outlined" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button variant="contained" onClick={handleSave}>
-              Save Changes
-            </Button>
-          </Box>
-        )}
-      </Paper>
-    </Container>
+              {/* Company Info for Companies */}
+              {profile.role === 'company' && (
+                <Card elevation={4}>
+                  <CardContent>
+                    <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <BusinessIcon color="primary" />
+                      Company Details
+                    </Typography>
+                    <Divider sx={{ my: 2 }} />
+
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Industry"
+                          name="industry"
+                          value={formData.companyInfo?.industry || ''}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            companyInfo: {
+                              ...formData.companyInfo,
+                              industry: e.target.value
+                            }
+                          })}
+                          disabled={!editing}
+                          variant={editing ? "outlined" : "standard"}
+                          InputProps={{ readOnly: !editing }}
+                          placeholder="e.g., Technology, Finance, Healthcare"
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          fullWidth
+                          label="Company Size"
+                          name="size"
+                          value={formData.companyInfo?.size || ''}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            companyInfo: {
+                              ...formData.companyInfo,
+                              size: e.target.value
+                            }
+                          })}
+                          disabled={!editing}
+                          variant={editing ? "outlined" : "standard"}
+                          InputProps={{ readOnly: !editing }}
+                          placeholder="e.g., 1-10, 50-100, 500+"
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          fullWidth
+                          label="Founded Year"
+                          name="founded"
+                          value={formData.companyInfo?.founded || ''}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            companyInfo: {
+                              ...formData.companyInfo,
+                              founded: e.target.value
+                            }
+                          })}
+                          disabled={!editing}
+                          variant={editing ? "outlined" : "standard"}
+                          InputProps={{ readOnly: !editing }}
+                          placeholder="e.g., 2020"
+                        />
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Save/Cancel Buttons */}
+              {editing && (
+                <Card elevation={4} sx={{ bgcolor: '#f5f5f5' }}>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+                      <Button 
+                        variant="outlined" 
+                        onClick={handleCancel}
+                        size="large"
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        variant="contained" 
+                        onClick={handleSave}
+                        size="large"
+                        sx={{
+                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                          '&:hover': {
+                            background: 'linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%)',
+                          }
+                        }}
+                      >
+                        Save Changes
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              )}
+            </Stack>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 

@@ -24,6 +24,8 @@ import {
   MenuItem,
   Chip,
   IconButton,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -49,6 +51,7 @@ const EmployerDashboard = () => {
     description: '',
     location: '',
     jobType: 'Full-time',
+    workMode: 'On-site',
     salary: '',
     skills: '',
     requirements: '',
@@ -133,6 +136,7 @@ const EmployerDashboard = () => {
         description: job.description || '',
         location: job.location,
         jobType: job.jobType,
+        workMode: job.workMode || 'On-site',
         salary: job.salary || '',
         skills: job.skills?.join(', ') || '',
         requirements: job.requirements?.join('\n') || '',
@@ -145,6 +149,7 @@ const EmployerDashboard = () => {
         description: '',
         location: '',
         jobType: 'Full-time',
+        workMode: 'On-site',
         salary: '',
         skills: '',
         requirements: '',
@@ -442,6 +447,45 @@ const EmployerDashboard = () => {
               </TextField>
             </Grid>
             <Grid item xs={12}>
+              <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                Work Mode
+              </Typography>
+              <ToggleButtonGroup
+                value={jobForm.workMode}
+                exclusive
+                onChange={(e, value) => value && setJobForm({ ...jobForm, workMode: value })}
+                sx={{ 
+                  display: 'flex',
+                  '& .MuiToggleButton-root': {
+                    flex: 1,
+                    border: '1px solid rgba(0,0,0,0.12)',
+                    borderRadius: 2,
+                    px: 3,
+                    py: 1.5,
+                    textTransform: 'none',
+                    fontWeight: 500,
+                    '&.Mui-selected': {
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      color: 'white',
+                      '&:hover': {
+                        background: 'linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%)',
+                      }
+                    }
+                  }
+                }}
+              >
+                <ToggleButton value="On-site">
+                  On-site
+                </ToggleButton>
+                <ToggleButton value="Hybrid">
+                  Hybrid
+                </ToggleButton>
+                <ToggleButton value="Remote">
+                  Remote
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Salary Range"
@@ -461,6 +505,7 @@ const EmployerDashboard = () => {
                 value={jobForm.description}
                 onChange={handleFormChange}
                 required
+                placeholder="Describe the role, responsibilities and team-culture"
               />
             </Grid>
             <Grid item xs={12}>

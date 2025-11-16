@@ -13,12 +13,13 @@ const createApplication = async (credentials, application) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
 const listApplications = async (credentials, signal) => {
   try {
-    const response = await fetch('/api/applications/', {
+    const response = await fetch('/api/applications/my-applications', {
       method: 'GET',
       signal: signal,
       headers: {
@@ -29,6 +30,7 @@ const listApplications = async (credentials, signal) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
@@ -45,6 +47,7 @@ const listApplicationsByJob = async (params, credentials, signal) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
@@ -62,6 +65,7 @@ const updateApplicationStatus = async (params, credentials, status) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
@@ -77,6 +81,7 @@ const removeApplication = async (params, credentials) => {
     return await response.json();
   } catch(err) {
     console.log(err);
+    return { error: 'Network error occurred' };
   }
 };
 
