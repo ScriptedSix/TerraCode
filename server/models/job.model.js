@@ -61,4 +61,11 @@ jobSchema.pre('save', function(next) {
   next();
 });
 
+jobSchema.index({
+  title: "text",
+  description: "text",
+  skills: "text",
+  location: "text"
+});
+
 module.exports = mongoose.model('Job', jobSchema);
