@@ -14,10 +14,12 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 import { styles } from "../styles/styles.js";
 import Logo from "../static/logo.jpg";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -54,6 +56,7 @@ export default function Signup() {
     <Box sx={styles.container}>
       {/* Close button */}
       <IconButton
+        onClick={() => navigate('/')}
         sx={{
           position: "absolute",
           top: 24,

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import auth from "./auth-helper.js";
 import { signin } from "../api/api-auth.js";
 import { styles } from "../styles/styles.js";
@@ -21,6 +21,7 @@ import Logo from "../static/logo.jpg";
 
 export default function Signin() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -61,7 +62,7 @@ export default function Signin() {
       {/* Header */}
       <AppBar position="fixed" sx={styles.appBar}>
         <Toolbar sx={styles.toolbar}>
-          <IconButton edge="start" color="inherit">
+          <IconButton edge="start" color="inherit" onClick={() => navigate('/')}>
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" sx={styles.headerTitle}>
