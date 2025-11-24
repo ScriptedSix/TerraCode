@@ -36,20 +36,141 @@ const PortfolioDetails = () => {
   const fetchPortfolioDetails = async () => {
     try {
       setLoading(true);
-      const abortController = new AbortController();
-      const signal = abortController.signal;
       
-      // Fetch portfolio data from backend
-      const data = await read({ portfolioId }, signal);
+      // Mock data matching the Portfolios page
+      const mockDevelopers = {
+        '674d1a2e8f3c4b5e6a7d8901': {
+          _id: '674d1a2e8f3c4b5e6a7d8901',
+          name: 'Sarah Chen',
+          email: 'sarah.chen@email.com',
+          role: 'developer',
+          profile: {
+            rating: 4.9,
+            bio: 'Full-stack developer with 8+ years of experience in React, Node.js, and cloud technologies. Passionate about building scalable web applications.',
+            skills: ['React', 'Node.js', 'TypeScript', 'AWS', 'MongoDB', 'Docker'],
+            location: 'San Francisco, CA',
+            github: 'https://github.com/sarahchen',
+            linkedin: 'https://linkedin.com/in/sarahchen',
+            website: 'https://sarahchen.dev',
+          }
+        },
+        '674d1a2e8f3c4b5e6a7d8902': {
+          _id: '674d1a2e8f3c4b5e6a7d8902',
+          name: 'Marcus Johnson',
+          email: 'marcus.j@email.com',
+          role: 'developer',
+          profile: {
+            rating: 4.8,
+            bio: 'Senior Software Engineer specializing in microservices architecture and DevOps. Experience with large-scale distributed systems.',
+            skills: ['Java', 'Spring Boot', 'Kubernetes', 'PostgreSQL', 'Redis', 'CI/CD'],
+            location: 'Austin, TX',
+            github: 'https://github.com/marcusj',
+            linkedin: 'https://linkedin.com/in/marcusjohnson',
+            website: 'https://marcusj.dev',
+          }
+        },
+        '674d1a2e8f3c4b5e6a7d8903': {
+          _id: '674d1a2e8f3c4b5e6a7d8903',
+          name: 'Aisha Patel',
+          email: 'aisha.patel@email.com',
+          role: 'developer',
+          profile: {
+            rating: 4.7,
+            bio: 'Frontend specialist with expertise in modern JavaScript frameworks and UI/UX design. Creating beautiful and performant user experiences.',
+            skills: ['React', 'Vue.js', 'CSS3', 'Tailwind', 'Figma', 'JavaScript'],
+            location: 'Toronto, ON',
+            github: 'https://github.com/aishapatel',
+            linkedin: 'https://linkedin.com/in/aishapatel',
+            website: 'https://aishapatel.design',
+          }
+        },
+        '674d1a2e8f3c4b5e6a7d8904': {
+          _id: '674d1a2e8f3c4b5e6a7d8904',
+          name: 'David Kim',
+          email: 'david.kim@email.com',
+          role: 'developer',
+          profile: {
+            rating: 4.6,
+            bio: 'Data Engineer and ML enthusiast. Building data pipelines and implementing machine learning solutions for business problems.',
+            skills: ['Python', 'TensorFlow', 'Apache Spark', 'SQL', 'Azure', 'Pandas'],
+            location: 'Seattle, WA',
+            github: 'https://github.com/davidkim',
+            linkedin: 'https://linkedin.com/in/davidkim',
+            website: 'https://davidkim.ai',
+          }
+        },
+        '674d1a2e8f3c4b5e6a7d8905': {
+          _id: '674d1a2e8f3c4b5e6a7d8905',
+          name: 'Elena Rodriguez',
+          email: 'elena.r@email.com',
+          role: 'developer',
+          profile: {
+            rating: 4.5,
+            bio: 'Mobile app developer with cross-platform expertise. Published 15+ apps with over 2M downloads combined.',
+            skills: ['React Native', 'Flutter', 'Swift', 'Kotlin', 'Firebase', 'GraphQL'],
+            location: 'Miami, FL',
+            github: 'https://github.com/elenarodriguez',
+            linkedin: 'https://linkedin.com/in/elenarodriguez',
+            website: 'https://elenarodriguez.app',
+          }
+        },
+        '674d1a2e8f3c4b5e6a7d8906': {
+          _id: '674d1a2e8f3c4b5e6a7d8906',
+          name: 'James Wright',
+          email: 'james.wright@email.com',
+          role: 'developer',
+          profile: {
+            rating: 4.4,
+            bio: 'Backend engineer focused on API design and database optimization. Expert in building high-performance RESTful services.',
+            skills: ['Go', 'Python', 'MySQL', 'Redis', 'RabbitMQ', 'Linux'],
+            location: 'New York, NY',
+            github: 'https://github.com/jameswright',
+            linkedin: 'https://linkedin.com/in/jameswright',
+            website: 'https://jameswright.tech',
+          }
+        },
+        '674d1a2e8f3c4b5e6a7d8907': {
+          _id: '674d1a2e8f3c4b5e6a7d8907',
+          name: 'Priya Sharma',
+          email: 'priya.sharma@email.com',
+          role: 'developer',
+          profile: {
+            rating: 4.3,
+            bio: 'Full-stack JavaScript developer with a passion for clean code and test-driven development. Contributor to open-source projects.',
+            skills: ['JavaScript', 'Next.js', 'Express', 'Jest', 'MongoDB', 'Git'],
+            location: 'Vancouver, BC',
+            github: 'https://github.com/priyasharma',
+            linkedin: 'https://linkedin.com/in/priyasharma',
+            website: 'https://priyasharma.codes',
+          }
+        },
+        '674d1a2e8f3c4b5e6a7d8908': {
+          _id: '674d1a2e8f3c4b5e6a7d8908',
+          name: 'Ahmed Hassan',
+          email: 'ahmed.hassan@email.com',
+          role: 'developer',
+          profile: {
+            rating: 4.2,
+            bio: 'Security-focused developer with expertise in application security and penetration testing. CISSP certified.',
+            skills: ['C++', 'Python', 'Cybersecurity', 'Penetration Testing', 'Bash', 'Docker'],
+            location: 'Boston, MA',
+            github: 'https://github.com/ahmedhassan',
+            linkedin: 'https://linkedin.com/in/ahmedhassan',
+            website: 'https://ahmedhassan.security',
+          }
+        },
+      };
+
+      const mockUser = mockDevelopers[portfolioId];
       
-      if (data.error) {
-        setError(data.error);
+      if (!mockUser) {
+        setError('Portfolio not found');
         setLoading(false);
         return;
       }
 
-      setPortfolio(data);
-      setUser(data.user);
+      setUser(mockUser);
+      setPortfolio({ user: mockUser });
       setLoading(false);
     } catch (error) {
       console.error('Error fetching portfolio details:', error);

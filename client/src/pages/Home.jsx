@@ -1,117 +1,143 @@
-import { Container, Typography, Button, Box, Grid, Card, CardContent, Paper, alpha } from '@mui/material';
+import { Container, Typography, Button, Box, Grid, Card, CardContent, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 import WorkIcon from '@mui/icons-material/Work';
 import PeopleIcon from '@mui/icons-material/People';
 import StarIcon from '@mui/icons-material/Star';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import heroImage from '../static/hero-laptop.png';
 
 const Home = () => {
   return (
-    <Box>
-      {/* Hero Section */}
+    <Box sx={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #d9e4ff 0%, #ffe4c4 100%)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      pt: 4,
+    }}>
+      {/* Hero card matching TerraCode prototype */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          py: { xs: 8, md: 12 },
-          textAlign: 'center',
-          position: 'relative',
+          width: '100%',
+          maxWidth: 1200,
+          borderRadius: 8,
           overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-          },
+          position: 'relative',
+          minHeight: { xs: 400, md: 500 },
+          background: 'linear-gradient(135deg, rgba(250, 252, 255, 0.92) 0%, rgba(255, 248, 236, 0.96) 100%)',
+          boxShadow: '0 24px 70px rgba(15, 35, 95, 0.2)',
+          mb: 4,
         }}
       >
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
-          <Box sx={{ mb: 2, animation: 'fadeInDown 0.8s ease-out' }}>
-            <RocketLaunchIcon sx={{ fontSize: 60, mb: 2 }} />
+        {/* Background laptop image - positioned absolutely behind text */}
+        <Box
+          component="img"
+          src={heroImage}
+          alt="TerraCode hero laptop"
+          sx={{
+            position: 'absolute',
+            right: { xs: '5%', md: '8%' },
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: { xs: '60%', md: '52%' },
+            height: 'auto',
+            opacity: 0.85,
+            filter: 'drop-shadow(0 22px 55px rgba(0,0,0,0.2))',
+            zIndex: 1,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Text content overlay - positioned above the image */}
+        <Box
+          sx={{
+            position: 'relative',
+            zIndex: 2,
+            px: { xs: 4, md: 6 },
+            py: { xs: 6, md: 8 },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 2,
+            maxWidth: { xs: '100%', md: '55%' },
+          }}
+        >
+              <Typography
+                variant="h5"
+                sx={{ color: '#143a5b', fontWeight: 600, mb: 1 }}
+              >
+                Hi I’m :
+              </Typography>
+              <Typography
+                component="h1"
+                sx={{
+                  fontSize: { xs: '2.1rem', md: '2.8rem' },
+                  lineHeight: 1.2,
+                  fontWeight: 800,
+                  color: '#123663',
+                  mb: 2,
+                }}
+              >
+                Where Tech talent
+                <br />
+                meets opportunity
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  fontSize: { xs: '0.98rem', md: '1.05rem' },
+                  color: '#2f4764',
+                  maxWidth: 450,
+                  mb: 3,
+                }}
+              >
+                Connecting innovative companies with top-tier talent, globally. Build your
+                team, or launch your career.
+              </Typography>
+
+              <Button
+                variant="contained"
+                size="large"
+                component={Link}
+                to="/jobs"
+                sx={{
+                  alignSelf: 'flex-start',
+                  px: 4,
+                  py: 1.3,
+                  borderRadius: 999,
+                  backgroundColor: '#003b8e',
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  boxShadow: '0 16px 40px rgba(0, 59, 142, 0.45)',
+                  '&:hover': {
+                    backgroundColor: '#002e6c',
+                    boxShadow: '0 20px 50px rgba(0, 46, 108, 0.6)',
+                  },
+                }}
+              >
+                Get Started
+              </Button>
           </Box>
-          <Typography 
-            variant="h2" 
-            component="h1" 
-            gutterBottom 
-            fontWeight="bold"
-            sx={{
-              fontSize: { xs: '2.5rem', md: '3.75rem' },
-              animation: 'fadeInUp 0.8s ease-out',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.2)',
-            }}
-          >
-            Connect with Top Tech Talent Worldwide
-          </Typography>
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              mb: 4,
-              fontSize: { xs: '1.25rem', md: '1.5rem' },
-              animation: 'fadeInUp 0.8s ease-out 0.2s',
-              animationFillMode: 'both',
-              opacity: 0.95,
-            }}
-          >
-            TerraCode - Your platform to find exceptional developers and tech experts
-          </Typography>
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 2, 
-            justifyContent: 'center', 
-            flexWrap: 'wrap',
-            animation: 'fadeInUp 0.8s ease-out 0.4s',
-            animationFillMode: 'both',
-          }}>
-            <Button
-              variant="contained"
-              size="large"
-              component={Link}
-              to="/jobs"
-              sx={{ 
-                px: 4, 
-                py: 1.5,
-                bgcolor: 'white',
-                color: '#667eea',
-                fontWeight: 'bold',
-                '&:hover': {
-                  bgcolor: 'rgba(255,255,255,0.9)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                },
-                transition: 'all 0.3s ease',
-              }}
-            >
-              Browse Jobs
-            </Button>
-            <Button
-              variant="outlined"
-              size="large"
-              sx={{ 
-                px: 4, 
-                py: 1.5, 
-                color: 'white', 
-                borderColor: 'white',
-                borderWidth: 2,
-                fontWeight: 'bold',
-                '&:hover': {
-                  borderWidth: 2,
-                  bgcolor: 'rgba(255,255,255,0.1)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                },
-                transition: 'all 0.3s ease',
-              }}
-              component={Link}
-              to="/portfolios"
-            >
-              View Portfolios
-            </Button>
-          </Box>
-        </Container>
+      </Box>
+
+      {/* Trusted strip */}
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: 1200,
+          borderRadius: 8,
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          backgroundColor: '#05396b',
+          py: 3.5,
+          textAlign: 'center',
+          color: '#f7fbff',
+          fontWeight: 600,
+          mb: 4,
+        }}
+      >
+        Trusted by many users across the world
       </Box>
 
       {/* Features Section */}
