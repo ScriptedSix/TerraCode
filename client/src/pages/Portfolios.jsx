@@ -40,10 +40,10 @@ const Portfolios = () => {
     try {
       setLoading(true);
       
-      // Mock data for developers
+      // Mock data for developers (using valid MongoDB ObjectId format)
       const mockDevelopers = [
         {
-          _id: '1',
+          _id: '674d1a2e8f3c4b5e6a7d8901',
           name: 'Sarah Chen',
           email: 'sarah.chen@email.com',
           role: 'developer',
@@ -57,7 +57,7 @@ const Portfolios = () => {
           }
         },
         {
-          _id: '2',
+          _id: '674d1a2e8f3c4b5e6a7d8902',
           name: 'Marcus Johnson',
           email: 'marcus.j@email.com',
           role: 'developer',
@@ -71,7 +71,7 @@ const Portfolios = () => {
           }
         },
         {
-          _id: '3',
+          _id: '674d1a2e8f3c4b5e6a7d8903',
           name: 'Aisha Patel',
           email: 'aisha.patel@email.com',
           role: 'developer',
@@ -85,7 +85,7 @@ const Portfolios = () => {
           }
         },
         {
-          _id: '4',
+          _id: '674d1a2e8f3c4b5e6a7d8904',
           name: 'David Kim',
           email: 'david.kim@email.com',
           role: 'developer',
@@ -99,7 +99,7 @@ const Portfolios = () => {
           }
         },
         {
-          _id: '5',
+          _id: '674d1a2e8f3c4b5e6a7d8905',
           name: 'Elena Rodriguez',
           email: 'elena.r@email.com',
           role: 'developer',
@@ -113,7 +113,7 @@ const Portfolios = () => {
           }
         },
         {
-          _id: '6',
+          _id: '674d1a2e8f3c4b5e6a7d8906',
           name: 'James Wright',
           email: 'james.wright@email.com',
           role: 'developer',
@@ -127,7 +127,7 @@ const Portfolios = () => {
           }
         },
         {
-          _id: '7',
+          _id: '674d1a2e8f3c4b5e6a7d8907',
           name: 'Priya Sharma',
           email: 'priya.sharma@email.com',
           role: 'developer',
@@ -141,7 +141,7 @@ const Portfolios = () => {
           }
         },
         {
-          _id: '8',
+          _id: '674d1a2e8f3c4b5e6a7d8908',
           name: 'Ahmed Hassan',
           email: 'ahmed.hassan@email.com',
           role: 'developer',

@@ -36,7 +36,6 @@ import Loading from '../components/Loading';
 const EmployerDashboard = () => {
   const [tabValue, setTabValue] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [openDialog, setOpenDialog] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [applications, setApplications] = useState([]);
@@ -48,10 +47,11 @@ const EmployerDashboard = () => {
 
   const [jobForm, setJobForm] = useState({
     title: '',
-    description: '',
+    companyName: '',
     location: '',
-    jobType: 'Full-time',
+    jobType: '',
     workMode: 'On-site',
+    description: '',
     salary: '',
     skills: '',
     requirements: '',
@@ -133,10 +133,11 @@ const EmployerDashboard = () => {
       setEditingJob(job);
       setJobForm({
         title: job.title,
-        description: job.description || '',
+        companyName: job.companyName || '',
         location: job.location,
-        jobType: job.jobType,
+        jobType: job.jobType || '',
         workMode: job.workMode || 'On-site',
+        description: job.description || '',
         salary: job.salary || '',
         skills: job.skills?.join(', ') || '',
         requirements: job.requirements?.join('\n') || '',
@@ -146,10 +147,11 @@ const EmployerDashboard = () => {
       setEditingJob(null);
       setJobForm({
         title: '',
-        description: '',
+        companyName: '',
         location: '',
-        jobType: 'Full-time',
+        jobType: '',
         workMode: 'On-site',
+        description: '',
         salary: '',
         skills: '',
         requirements: '',
@@ -160,7 +162,6 @@ const EmployerDashboard = () => {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
     setEditingJob(null);
   };
 
@@ -223,18 +224,239 @@ const EmployerDashboard = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" fontWeight="bold">
-          Employer Dashboard
-        </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => handleOpenDialog()}
+      {/* Page Header matching prototype */}
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="h3"
+          fontWeight={800}
+          sx={{ mb: 1, color: '#1a2750' }}
         >
-          Post New Job
-        </Button>
+          Post a New Job
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          sx={{ color: '#4f5b7a' }}
+        >
+          Fill in the details below to find out the best tech talent
+        </Typography>
       </Box>
+
+      {/* Job Details Card */}
+      <Paper
+        elevation={4}
+        sx={{
+          mb: 5,
+          borderRadius: 6,
+          p: 4,
+          backgroundColor: '#f9fbff',
+          boxShadow: '0 18px 45px rgba(15, 35, 95, 0.12)',
+        }}
+      >
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            <Typography
+              variant="h5"
+              fontWeight={700}
+              sx={{ mb: 2, color: '#1a2750' }}
+            >
+              Job Details
+            </Typography>
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+              <TextField
+                fullWidth
+                label="Job Title"
+                name="title"
+                value={jobForm.title}
+                onChange={handleFormChange}
+                placeholder="e.g. Senior Full Stack Developer"
+                required
+                InputProps={{
+                  sx: {
+                    borderRadius: 999,
+                    backgroundColor: 'white',
+                  },
+                }}
+              />
+
+              <TextField
+                fullWidth
+                label="Company Name"
+                name="companyName"
+                value={jobForm.companyName}
+                onChange={handleFormChange}
+                InputProps={{
+                  sx: {
+                    borderRadius: 999,
+                    backgroundColor: 'white',
+                  },
+                }}
+              />
+
+              <TextField
+                fullWidth
+                label="Location"
+                name="location"
+                value={jobForm.location}
+                onChange={handleFormChange}
+                InputProps={{
+                  sx: {
+                    borderRadius: 999,
+                    backgroundColor: 'white',
+                  },
+                }}
+              />
+
+              <TextField
+                fullWidth
+                label="Job Type"
+                name="jobType"
+                value={jobForm.jobType}
+                onChange={handleFormChange}
+                placeholder="e.g. Full-time, Contract"
+                InputProps={{
+                  sx: {
+                    borderRadius: 999,
+                    backgroundColor: 'white',
+                  },
+                }}
+              />
+            </Box>
+          </Grid>
+
+          {/* Work mode buttons to the right */}
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: { xs: 'flex-start', md: 'flex-end' },
+              gap: 2,
+              mt: { xs: 3, md: 0 },
+            }}
+          >
+            <ToggleButtonGroup
+              value={jobForm.workMode}
+              exclusive
+              onChange={(e, value) => value && setJobForm({ ...jobForm, workMode: value })}
+              orientation="vertical"
+              sx={{
+                '& .MuiToggleButton-root': {
+                  mb: 1.5,
+                  borderRadius: 999,
+                  px: 3.5,
+                  py: 1,
+                  textTransform: 'none',
+                  fontWeight: 700,
+                  border: 'none',
+                  boxShadow: '0 6px 14px rgba(0,0,0,0.08)',
+                  color: '#234075',
+                  backgroundColor: '#ffffff',
+                  '&:hover': {
+                    backgroundColor: '#f0f4ff',
+                  },
+                  '&.Mui-selected': {
+                    backgroundColor: '#2344ff',
+                    color: '#ffffff',
+                    boxShadow: '0 10px 25px rgba(35,68,255,0.35)',
+                  },
+                },
+              }}
+            >
+              <ToggleButton value="On-site">On-site</ToggleButton>
+              <ToggleButton value="Hybrid">Hybrid</ToggleButton>
+              <ToggleButton value="Remote">Remote</ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
+        </Grid>
+
+        {/* Job Description section */}
+        <Box sx={{ mt: 4 }}>
+          <Typography
+            variant="h5"
+            fontWeight={700}
+            sx={{ mb: 2, color: '#1a2750' }}
+          >
+            Jobs Description
+          </Typography>
+
+          <TextField
+            fullWidth
+            multiline
+            minRows={4}
+            name="description"
+            value={jobForm.description}
+            onChange={handleFormChange}
+            placeholder="Describe the role, responsibilities and team-culture"
+            InputProps={{
+              sx: {
+                borderRadius: 4,
+                backgroundColor: 'white',
+              },
+            }}
+          />
+
+          <Grid container spacing={2} sx={{ mt: 3 }}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Salary Range"
+                name="salary"
+                value={jobForm.salary}
+                onChange={handleFormChange}
+                placeholder="e.g., $80k - $120k"
+                InputProps={{
+                  sx: {
+                    borderRadius: 999,
+                    backgroundColor: 'white',
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Required Skills (comma-separated)"
+                name="skills"
+                value={jobForm.skills}
+                onChange={handleFormChange}
+                placeholder="React, Node.js, MongoDB"
+                InputProps={{
+                  sx: {
+                    borderRadius: 999,
+                    backgroundColor: 'white',
+                  },
+                }}
+              />
+            </Grid>
+          </Grid>
+
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
+            <Button
+              onClick={handleCloseDialog}
+              sx={{ mr: 2, textTransform: 'none' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleSubmitJob}
+              sx={{
+                textTransform: 'none',
+                px: 4,
+                py: 1.2,
+                borderRadius: 999,
+                boxShadow: '0 10px 25px rgba(35,68,255,0.35)',
+              }}
+            >
+              {editingJob ? 'Update Job' : 'Post Job'}
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
 
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
@@ -276,7 +498,7 @@ const EmployerDashboard = () => {
         </Grid>
       </Grid>
 
-      {/* Tabs Section */}
+      {/* Tabs Section (kept for managing posts & applications) */}
       <Paper elevation={3}>
         <Tabs value={tabValue} onChange={handleTabChange} sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tab label="My Job Posts" />
@@ -405,150 +627,6 @@ const EmployerDashboard = () => {
           )}
         </Box>
       </Paper>
-
-      {/* Job Post Dialog */}
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
-        <DialogTitle>{editingJob ? 'Edit Job' : 'Post New Job'}</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Job Title"
-                name="title"
-                value={jobForm.title}
-                onChange={handleFormChange}
-                required
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Location"
-                name="location"
-                value={jobForm.location}
-                onChange={handleFormChange}
-                required
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                select
-                label="Job Type"
-                name="jobType"
-                value={jobForm.jobType}
-                onChange={handleFormChange}
-              >
-                <MenuItem value="Full-time">Full-time</MenuItem>
-                <MenuItem value="Part-time">Part-time</MenuItem>
-                <MenuItem value="Contract">Contract</MenuItem>
-                <MenuItem value="Freelance">Freelance</MenuItem>
-              </TextField>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
-                Work Mode
-              </Typography>
-              <ToggleButtonGroup
-                value={jobForm.workMode}
-                exclusive
-                onChange={(e, value) => value && setJobForm({ ...jobForm, workMode: value })}
-                sx={{ 
-                  display: 'flex',
-                  '& .MuiToggleButton-root': {
-                    flex: 1,
-                    border: '1px solid rgba(0,0,0,0.12)',
-                    borderRadius: 2,
-                    px: 3,
-                    py: 1.5,
-                    textTransform: 'none',
-                    fontWeight: 500,
-                    '&.Mui-selected': {
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      color: 'white',
-                      '&:hover': {
-                        background: 'linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%)',
-                      }
-                    }
-                  }
-                }}
-              >
-                <ToggleButton value="On-site">
-                  On-site
-                </ToggleButton>
-                <ToggleButton value="Hybrid">
-                  Hybrid
-                </ToggleButton>
-                <ToggleButton value="Remote">
-                  Remote
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Salary Range"
-                name="salary"
-                value={jobForm.salary}
-                onChange={handleFormChange}
-                placeholder="e.g., $80k - $120k"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="Job Description"
-                name="description"
-                value={jobForm.description}
-                onChange={handleFormChange}
-                required
-                placeholder="Describe the role, responsibilities and team-culture"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Required Skills (comma-separated)"
-                name="skills"
-                value={jobForm.skills}
-                onChange={handleFormChange}
-                placeholder="React, Node.js, MongoDB"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="Requirements (one per line)"
-                name="requirements"
-                value={jobForm.requirements}
-                onChange={handleFormChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="Responsibilities (one per line)"
-                name="responsibilities"
-                value={jobForm.responsibilities}
-                onChange={handleFormChange}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleSubmitJob} variant="contained">
-            {editingJob ? 'Update Job' : 'Post Job'}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Container>
   );
 };
