@@ -8,112 +8,109 @@ const Home = () => {
 
   return (
     <Box>
-      {/* Hero Section */}
+      {/* Hero Section with Background */}
       <Box
         sx={{
           minHeight: '90vh',
-          background: 'linear-gradient(135deg, #E8F4F8 0%, #FFF8E7 100%)',
+          position: 'relative',
           display: 'flex',
           alignItems: 'center',
-          position: 'relative',
           overflow: 'hidden',
+          // Background image
+          backgroundImage: `linear-gradient(135deg, rgba(232, 244, 248, 0.3) 0%, rgba(255, 248, 231, 0.2) 100%), url(${heroLaptop})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       >
         <Container maxWidth="lg">
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 4,
+              maxWidth: '700px',
+              zIndex: 2,
             }}
           >
-            {/* Left Content */}
-            <Box sx={{ flex: 1, minWidth: '300px' }}>
-              <Typography
-                variant="h1"
-                sx={{
-                  fontSize: { xs: '2rem', md: '3rem' },
-                  fontWeight: 700,
-                  color: 'primary.main',
-                  mb: 2,
-                }}
-              >
-                Hi I'm :
-              </Typography>
-              <Typography
-                variant="h2"
-                sx={{
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
-                  fontWeight: 700,
-                  color: 'primary.main',
-                  mb: 3,
-                }}
-              >
-                Where Tech talent meets opportunity
-              </Typography>
-              
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: { xs: '1rem', md: '1.25rem' },
-                  color: 'text.secondary',
-                  mb: 4,
-                  maxWidth: '500px',
-                }}
-              >
-                Connecting innovative companies with top-tier talent, globally. 
-                Build your team, or launch your career.
-              </Typography>
-
-              <Button
-                component={Link}
-                to={isAuthenticated ? "/jobs" : "/signup"}
-                variant="contained"
-                size="large"
-                sx={{
-                  bgcolor: 'primary.main',
-                  color: 'white',
-                  px: 5,
-                  py: 1.5,
-                  fontSize: '1.1rem',
-                  borderRadius: '30px',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                  },
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                Get Started
-              </Button>
-            </Box>
-
-            {/* Right Image */}
-            <Box
+            {/* Text Content */}
+            <Typography
+              variant="h1"
               sx={{
-                flex: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minWidth: '300px',
+                fontSize: { xs: '2.5rem', md: '4rem' },
+                fontWeight: 700,
+                color: 'primary.main',
+                mb: 2,
+                textShadow: '2px 2px 4px rgba(255,255,255,0.8)',
               }}
             >
-              <img
-                src={heroLaptop}
-                alt="Tech Laptop"
-                style={{
-                  width: '100%',
-                  maxWidth: '600px',
-                  height: 'auto',
-                  filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.1))',
-                }}
-              />
-            </Box>
+              Hi I'm :
+            </Typography>
+            
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: { xs: '2rem', md: '3rem' },
+                fontWeight: 700,
+                color: 'primary.main',
+                mb: 3,
+                textShadow: '2px 2px 4px rgba(255,255,255,0.8)',
+                lineHeight: 1.2,
+              }}
+            >
+              Where Tech talent meets opportunity
+            </Typography>
+            
+            <Typography
+              variant="h5"
+              sx={{
+                fontSize: { xs: '1rem', md: '1.25rem' },
+                color: 'text.primary',
+                mb: 4,
+                fontWeight: 500,
+                textShadow: '1px 1px 2px rgba(255,255,255,0.9)',
+              }}
+            >
+              Connecting innovative companies with top-tier talent, globally. 
+              Build your team, or launch your career.
+            </Typography>
+
+            <Button
+              component={Link}
+              to={isAuthenticated ? "/jobs" : "/signup"}
+              variant="contained"
+              size="large"
+              sx={{
+                bgcolor: 'primary.main',
+                color: 'white',
+                px: 5,
+                py: 1.5,
+                fontSize: '1.1rem',
+                borderRadius: '30px',
+                boxShadow: '0 4px 12px rgba(0,51,102,0.3)',
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 20px rgba(0,51,102,0.4)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+              Get Started
+            </Button>
           </Box>
         </Container>
+
+        {/* Decorative overlay gradient for better text readability on the right */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: '50%',
+            background: 'linear-gradient(90deg, transparent 0%, rgba(232, 244, 248, 0.3) 100%)',
+            pointerEvents: 'none',
+            display: { xs: 'none', md: 'block' },
+          }}
+        />
       </Box>
 
       {/* Trust Section */}
@@ -132,7 +129,7 @@ const Home = () => {
 
       {/* Features Section */}
       <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Typography variant="h3" align="center" sx={{ mb: 6 }}>
+        <Typography variant="h3" align="center" sx={{ mb: 6, fontWeight: 700, color: 'primary.main' }}>
           Why Choose TerraCode?
         </Typography>
         

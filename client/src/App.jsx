@@ -24,6 +24,7 @@ import CompanyDashboard from './pages/dashboard/CompanyDashboard';
 import MyApplications from './pages/dashboard/MyApplications';
 import Companies from './pages/companies/Companies';
 import CompanyDetails from './pages/companies/CompanyDetails';
+import JobApplications from './pages/dashboard/JobApplications';
 
 // Redirect component based on role
 const RoleBasedRedirect = () => {
@@ -71,7 +72,14 @@ function AppRoutes() {
       </ProtectedRoute>
     }
   />
-
+    <Route
+    path="/job-applications/:jobId"
+    element={
+        <ProtectedRoute allowedRoles={['company']}>
+        <JobApplications />
+        </ProtectedRoute>
+    }
+    />
   {/* Protected Routes - Developer Only */}
   <Route
     path="/dashboard/developer"

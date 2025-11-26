@@ -190,9 +190,9 @@ const CompanyDashboard = () => {
                       </Button>
                       <Button
                         size="small"
-                        onClick={() => navigate(`/applications/job/${job._id}`)}
+                        onClick={() => navigate(`/job-applications/${job._id}`)}
                       >
-                        Applications
+                        View Applications
                       </Button>
                     </TableCell>
                   </TableRow>

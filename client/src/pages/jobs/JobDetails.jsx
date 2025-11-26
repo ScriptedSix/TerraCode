@@ -28,7 +28,11 @@ import { useForm } from 'react-hook-form';
 const JobDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated, isDeveloper } = useAuth();
+  
+  // Auth hook - must be inside component
+  const { isAuthenticated, isDeveloper, isCompany, user } = useAuth();
+  
+  // State
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [applyDialogOpen, setApplyDialogOpen] = useState(false);
@@ -46,6 +50,8 @@ const JobDetails = () => {
   useEffect(() => {
     fetchJob();
   }, [id]);
+  
+  // ... rest of component
 
   const fetchJob = async () => {
     try {
@@ -179,14 +185,24 @@ const JobDetails = () => {
               sx={{ textTransform: 'capitalize' }}
             />
 
-            <Button
-              variant="contained"
-              size="large"
-              onClick={handleApplyClick}
-              sx={{ ml: 2, borderRadius: '25px', px: 4 }}
-            >
-              Apply Now
-            </Button>
+                        {/* Only show Apply button for developers */}
+            {isDeveloper && (
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleApplyClick}
+                sx={{ ml: 2, borderRadius: '25px', px: 4 }}
+              >
+                Apply Now
+              </Button>
+            )}
+
+            {/* Show info for companies */}
+            {isCompany && (
+              <Typography variant="body2" color="text.secondary" sx={{ ml: 2, fontStyle: 'italic' }}>
+                Companies cannot apply to jobs
+              </Typography>
+            )}
           </Box>
 
           <Divider sx={{ my: 3 }} />

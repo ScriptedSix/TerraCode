@@ -54,6 +54,14 @@ const Navbar = () => {
         <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
           <Button 
             component={Link} 
+            to="/" 
+            sx={{ color: 'primary.main', fontWeight: 500 }}
+          >
+            Home
+          </Button>
+          
+          <Button 
+            component={Link} 
             to="/jobs" 
             sx={{ color: 'primary.main', fontWeight: 500 }}
           >
