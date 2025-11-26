@@ -173,7 +173,7 @@ The application uses JWT (JSON Web Tokens) for authentication:
 - Kelly Cyusa - Frontend Developer [GitHub](https://github.com/ckelly39)
 - Tesneem Awuti - Backend Developer [GitHub](https://github.com/Tesneem-Uyghur)
 - Tabya Kaur Sarao - Designer [GitHub](https://github.com/tabyasarao)
-- Benjamin Nguyen - Data Enfineer [GitHub](https://github.com/benjaminthienan)
+- Benjamin Nguyen - Data Engineer [GitHub](https://github.com/benjaminthienan)
 
 
 **Made with ❤️ by the ScriptedSix Team**
