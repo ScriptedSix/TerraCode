@@ -1,134 +1,139 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import Profile from './pages/profile';
+import MyPortfolio from './pages/MyPortfolio';
+import theme from './theme';
 
 // Components
-import Header from './components/Header.jsx';
-import Footer from './components/Footer.jsx';
-import PrivateRoute from './components/PrivateRoute.jsx';
+import Navbar from './components/common/Navbar';
+import ProtectedRoute from './components/common/ProtectedRoute';
 
 // Pages
-import Home from './pages/Home.jsx';
-import JobListings from './pages/JobListings.jsx';
-import JobDetails from './pages/JobDetails.jsx';
-import Portfolios from './pages/Portfolios.jsx';
-import PortfolioDetails from './pages/PortfolioDetails.jsx';
-import Profile from './pages/Profile.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import EmployerDashboard from './pages/EmployerDashboard.jsx';
+import Home from './pages/Home';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
+import Jobs from './pages/jobs/Jobs';
+import JobDetails from './pages/jobs/JobDetails';
+import PostJob from './pages/jobs/PostJob';
+import Portfolios from './pages/portfolio/Portfolios';
+import PortfolioDetails from './pages/portfolio/PortfolioDetails';
+import DeveloperDashboard from './pages/dashboard/DeveloperDashboard';
+import CompanyDashboard from './pages/dashboard/CompanyDashboard';
+import MyApplications from './pages/dashboard/MyApplications';
+import Companies from './pages/companies/Companies';
+import CompanyDetails from './pages/companies/CompanyDetails';
 
-// Auth
-import Signup from './user/Signup.jsx';
-import Signin from './user/Signin.jsx';
+// Redirect component based on role
+const RoleBasedRedirect = () => {
+  const { user, isAuthenticated, loading } = useAuth();
 
-// Create theme
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#667eea',
-      light: '#8b9ff5',
-      dark: '#4f5dd4',
-    },
-    secondary: {
-      main: '#764ba2',
-      light: '#9168ba',
-      dark: '#5a3880',
-    },
-    background: {
-      default: '#f5f7fa',
-      paper: '#ffffff',
-    },
-  },
-  typography: {
-    fontFamily: [
-      'Roboto',
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
-    h1: {
-      fontWeight: 700,
-    },
-    h2: {
-      fontWeight: 700,
-    },
-    h3: {
-      fontWeight: 600,
-    },
-    h4: {
-      fontWeight: 600,
-    },
-    button: {
-      textTransform: 'none',
-      fontWeight: 600,
-    },
-  },
-  shape: {
-    borderRadius: 8,
-  },
-  shadows: [
-    'none',
-    '0px 2px 4px rgba(0,0,0,0.05)',
-    '0px 4px 8px rgba(0,0,0,0.08)',
-    '0px 8px 16px rgba(0,0,0,0.1)',
-    '0px 12px 24px rgba(0,0,0,0.12)',
-    '0px 16px 32px rgba(0,0,0,0.15)',
-    ...Array(19).fill('0px 20px 40px rgba(0,0,0,0.2)'),
-  ],
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          padding: '8px 24px',
-          transition: 'all 0.3s ease',
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        rounded: {
-          borderRadius: 12,
-        },
-      },
-    },
-  },
-});
+  if (loading) return null;
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user.role === 'developer') {
+    return <Navigate to="/dashboard/developer" replace />;
+  } else if (user.role === 'company') {
+    return <Navigate to="/dashboard/company" replace />;
+  } else if (user.role === 'admin') {
+    return <Navigate to="/dashboard/admin" replace />;
+  }
+
+  return <Navigate to="/" replace />;
+};
+
+function AppRoutes() {
+  return (
+    <>
+      <Navbar />
+<Routes>
+  {/* Public Routes */}
+  <Route path="/" element={<Home />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/signup" element={<Signup />} />
+  <Route path="/jobs" element={<Jobs />} />
+  <Route path="/jobs/:id" element={<JobDetails />} />
+  <Route path="/portfolios" element={<Portfolios />} />
+  <Route path="/portfolios/:userId" element={<PortfolioDetails />} />
+  <Route path="/companies" element={<Companies />} />
+  <Route path="/companies/:companyId" element={<CompanyDetails />} />
+
+  {/* Protected Routes - Any Authenticated User */}
+  <Route
+    path="/profile"
+    element={
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    }
+  />
+
+  {/* Protected Routes - Developer Only */}
+  <Route
+    path="/dashboard/developer"
+    element={
+      <ProtectedRoute allowedRoles={['developer']}>
+        <DeveloperDashboard />
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/my-applications"
+    element={
+      <ProtectedRoute allowedRoles={['developer']}>
+        <MyApplications />
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/my-portfolio"
+    element={
+      <ProtectedRoute allowedRoles={['developer']}>
+        <MyPortfolio />
+      </ProtectedRoute>
+    }
+  />
+
+  {/* Protected Routes - Company Only */}
+  <Route
+    path="/dashboard/company"
+    element={
+      <ProtectedRoute allowedRoles={['company']}>
+        <CompanyDashboard />
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/post-job"
+    element={
+      <ProtectedRoute allowedRoles={['company']}>
+        <PostJob />
+      </ProtectedRoute>
+    }
+  />
+
+  {/* Generic Dashboard Redirect */}
+  <Route path="/dashboard" element={<RoleBasedRedirect />} />
+
+  {/* Catch all */}
+  <Route path="*" element={<Navigate to="/" replace />} />
+</Routes>
+    </>
+  );
+}
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Header />
-          <main style={{ flexGrow: 1 }}>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/signin" element={<Signin />} />
-              <Route path="/jobs" element={<JobListings />} />
-              <Route path="/jobs/:jobId" element={<JobDetails />} />
-              <Route path="/portfolios" element={<Portfolios />} />
-              <Route path="/portfolios/:portfolioId" element={<PortfolioDetails />} />
-
-              {/* Protected Routes */}
-              <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-              <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-              <Route path="/employer-dashboard" element={<PrivateRoute><EmployerDashboard /></PrivateRoute>} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
       </Router>
     </ThemeProvider>
   );
