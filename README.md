@@ -168,6 +168,29 @@ The application uses JWT (JSON Web Tokens) for authentication:
 - `company` - Can post jobs, view applications
 - `admin` - Full access to all resources
 
+## 🎨 UI Designs (By Tabya)
+
+All UI mockups and design assets for TerraCode are stored in the `designs/` directory.
+
+### 🔐 Sign In Page
+![Sign In](./designs/ui-screens/SignIn.png)
+
+### 📝 Sign Up Page
+![Sign Up](./designs/ui-screens/SignUp.png)
+
+### 👤 User Profile
+![Profile](./designs/ui-screens/Profile(1).png)
+
+### 👤 Public Profile
+![Profile](./designs/ui-screens/Profile(2).png)
+
+### 🏠 Landing Page
+![Landing](./designs/ui-screens/Landing Page.png)
+
+### 💼 Job Posting
+![Job Posting](./designs/ui-screens/Job Posting.png)
+
+
 - Jihna Park - Tester [GitHub](https://github.com/jpark290)
 - Elizaveta Semenova - Project Manager [GitHub](https://github.com/SemenovaLiza)
 - Kelly Cyusa - Frontend Developer [GitHub](https://github.com/ckelly39)
