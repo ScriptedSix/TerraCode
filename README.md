@@ -103,6 +103,138 @@ The application will be available at:
 - Backend API: `http://localhost:3000`
 
 ## 📡 API Endpoints
+**API Usage Examples & Testing Summary (By Jinha Park)**
+This section summarizes how the backend APIs were tested using Postman with a connected MongoDB Atlas environment.
+The goal of the testing was to verify backend correctness, API stability, and role-based access control across Authentication, Portfolio, Job Postings, Applications, and Admin modules.
+
+## 1. Authentication Tests
+
+### Register
+```json
+POST /api/auth/register
+{
+  "name": "Test User",
+  "email": "test_user@example.com",
+  "password": "123456"
+}
+```
+
+### Login
+```json
+POST /api/auth/login
+{
+  "email": "test_user@example.com",
+  "password": "123456"
+}
+```
+
+### Token Verification
+```json
+GET /api/auth/me
+Authorization: Bearer <token>
+```
+
+## 2. Portfolio & Projects CRUD
+
+### Add Project
+```json
+POST /api/portfolios/project
+Authorization: Bearer <token>
+{
+  "title": "Example Project",
+  "description": "Sample test",
+  "techStack": ["Node.js", "React"]
+}
+```
+
+**Verified Behaviors**
+
+- Create / Update / Delete project works  
+- Users cannot modify another user’s portfolio  
+- “My Portfolio” and “Public Portfolio” both returned correct data
+---
+
+## 3. Job Posting (Company Only)
+
+### Create Job
+```json
+POST /api/jobs
+Authorization: Bearer <company_token>
+{
+  "title": "Backend Developer",
+  "location": "Toronto",
+  "skills": ["Node.js"],
+  "jobType": "full-time"
+}
+```
+
+**Verified Behaviors**
+
+- Only company accounts can create jobs  
+- Developers receive 403 Forbidden on POST /api/jobs  
+- Job listing page correctly shows available jobs  
+- Filtering by jobType / location / skills returns correct results  
+---
+
+## 4. Job Applications
+
+### Apply to Job
+```json
+POST /api/applications
+Authorization: Bearer <developer_token>
+{
+  "jobID": "<job_id>",
+  "coverLetter": "I am interested in this role.",
+  "resume": "https://resume-link"
+}
+```
+
+**Verified Behaviors**
+
+- Developer can successfully apply  
+- Company can view all applicants for their job  
+- Company can update application status  
+- Developer can delete (withdraw) their own application  
+
+---
+
+## 5. Admin Privilege Tests
+
+### View All Users
+```json
+GET /api/users
+Authorization: Bearer <admin_token>
+```
+
+### Admin Deleting a User
+```json
+DELETE /api/users/<user_id>
+Authorization: Bearer <admin_token>
+```
+
+**Verified Behaviors**
+- Admin can view all users  
+- Admin can delete any user  
+- Admin can delete any job  
+- Developers & companies are correctly blocked (403 Forbidden)  
+
+---
+
+## Testing Conclusion
+
+All backend API modules performed as expected:
+
+- JWT authentication works reliably  
+- Role-based permissions enforced correctly  
+- CRUD operations validated for Portfolios, Jobs, and Applications  
+- Admin-only routes operate as intended  
+- No unauthorized access during negative test cases  
+- A complete screenshot-based testing document (17 pages) is stored in the team folder  
+
+The backend is stable and feature-complete for the **First Release**.
+
+---
+
 
 ### Authentication
 - `POST /api/auth/register` - Register new user
