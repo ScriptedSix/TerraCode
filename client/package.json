@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run server\" \"vite\"",
+    "dev:client": "vite",
+    "server": "cd ../server && npm start",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -23,6 +25,7 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
     "vite": "^5.1.0"
   }
 }
