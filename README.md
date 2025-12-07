@@ -41,6 +41,10 @@ A full-stack web application connecting tech professionals with companies worldw
 - **bcrypt** - Password hashing
 - **Multer** - File upload handling
 
+## 🗄️ Database Schema Diagram (By Benjamin Nguyen)
+This diagram shows all collections and relationships used in the project database.
+![Database Schema](./designs/db/schema.png)
+
 ## Getting Started
 
 ### Prerequisites
