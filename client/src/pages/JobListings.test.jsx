@@ -13,12 +13,12 @@ describe('JobListings Component', () => {
   
   test('renders the main heading correctly', () => {
     renderWithRouter(<JobListings />);
-    expect(screen.getByText(/Browse Jobs/i)).toBeInTheDocument();
+    expect(screen.getByText(/Find Your Dream Job/i)).toBeInTheDocument();
   });
 
   test('renders the subtitle with job count', async () => {
     renderWithRouter(<JobListings />);
-    const subtitle = await screen.findByText(/Find your next opportunity from 3 available positions/i);
+    const subtitle = await screen.findByText(/Discover 3 opportunities waiting for you/i);
     expect(subtitle).toBeInTheDocument();
   });
 
@@ -93,7 +93,9 @@ describe('JobListings Component', () => {
   test('displays location information', async () => {
     renderWithRouter(<JobListings />);
     
-    expect(await screen.findByText('Remote')).toBeInTheDocument();
+    // Remote appears multiple times (location + chip), so check for all
+    const remoteTags = await screen.findAllByText('Remote');
+    expect(remoteTags.length).toBeGreaterThan(0);
     expect(await screen.findByText('New York, NY')).toBeInTheDocument();
     expect(await screen.findByText('San Francisco, CA')).toBeInTheDocument();
   });
@@ -137,7 +139,7 @@ describe('JobListings Component', () => {
     renderWithRouter(<JobListings />);
     
     await screen.findByText('Senior Full Stack Developer');
-    const viewDetailsButtons = screen.getAllByText('View Details');
+    const viewDetailsButtons = screen.getAllByText(/View Details/i);
     expect(viewDetailsButtons).toHaveLength(3);
   });
 
@@ -323,7 +325,7 @@ describe('JobListings Component', () => {
     
     await screen.findByText('Senior Full Stack Developer');
     
-    const viewDetailsButtons = screen.getAllByText('View Details');
+    const viewDetailsButtons = screen.getAllByText(/View Details/i);
     
     expect(viewDetailsButtons[0].closest('a')).toHaveAttribute('href', '/jobs/1');
     expect(viewDetailsButtons[1].closest('a')).toHaveAttribute('href', '/jobs/2');
