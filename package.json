@@ -6,12 +6,17 @@
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd server && npm start",
     "client": "cd client && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "performance": "node lighthouse-test.js"
   },
   "dependencies": {
     "multer": "^2.0.2"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "cypress": "^15.7.1",
+    "lighthouse": "^13.0.1"
   }
 }

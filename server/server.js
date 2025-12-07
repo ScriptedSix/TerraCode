@@ -25,6 +25,9 @@ app.get('/', (req, res) => {
   res.json({ message: 'API is running...' });
 });
 
+// Connect to MongoDB
+connectDB();
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

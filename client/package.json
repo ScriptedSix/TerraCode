@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently 'vite' \"nodemon ../server.js\"",
+    "dev": "vite",
+    "dev:full": "concurrently \"vite\" \"cd ../server && npm run dev\"",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -17,6 +18,7 @@
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
     "@mui/styles": "^6.4.8",
+    "axios": "^1.13.2",
     "dotenv": "^17.2.3",
     "global": "^4.4.0",
     "react": "^19.1.0",
