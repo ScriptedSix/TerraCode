@@ -1,5 +1,17 @@
 {
+  "name": "terracode-app",
+  "version": "1.0.0",
+  "description": "Full-stack application with React frontend and Node.js backend",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
   "dependencies": {
     "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
