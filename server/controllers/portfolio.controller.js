@@ -1,6 +1,25 @@
 const Portfolio = require('../models/portfolio.model');
 const User = require('../models/user.model');
 
+// @desc    Get all portfolios
+// @route   GET /api/portfolio
+// @access  Public
+exports.getAllPortfolios = async (req, res) => {
+  try {
+    const portfolios = await Portfolio.find()
+      .populate('user', 'name email role profile')
+      .sort('-createdAt');
+
+    res.status(200).json({
+      count: portfolios.length,
+      portfolios
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
 // @desc    Create or update portfolio
 // @route   POST /api/portfolio
 // @access  Private

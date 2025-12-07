@@ -1,29 +1,45 @@
-import { signout } from '../api/api-auth.js'
-
 const auth = {
+    // Check if user is authenticated
     isAuthenticated() {
-        if (typeof window == "undefined")
-            return false
+        if (typeof window == "undefined") return false;
 
         if (sessionStorage.getItem('jwt'))
-            return JSON.parse(sessionStorage.getItem('jwt'))
+            return JSON.parse(sessionStorage.getItem('jwt'));
         else
-            return false
+            return false;
     },
+
+    // Authenticate user (save JWT to sessionStorage)
     authenticate(jwt, cb) {
         if (typeof window !== "undefined")
-            sessionStorage.setItem('jwt', JSON.stringify(jwt))
-        cb()
+            sessionStorage.setItem('jwt', JSON.stringify(jwt));
+        cb();
     },
+
+    // Clear JWT from sessionStorage
     clearJWT(cb) {
         if (typeof window !== "undefined")
-            sessionStorage.removeItem('jwt')
-        cb()
-            //optional
-        signout().then((data) => {
-            document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-        })
-    }
-}
+            sessionStorage.removeItem('jwt');
+        cb();
+        // Optional: make a signout request to backend
+    },
 
-export default auth
+    // Update stored user info
+    updateUser(updatedFields, cb) {
+        if (typeof window !== "undefined") {
+            let jwt = JSON.parse(sessionStorage.getItem('jwt'));
+
+            if (!jwt || !jwt.user) return;
+
+            jwt.user = {
+                ...jwt.user,
+                ...updatedFields
+            };
+
+            sessionStorage.setItem('jwt', JSON.stringify(jwt));
+            cb();
+        }
+    }
+};
+
+export default auth;

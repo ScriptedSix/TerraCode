@@ -12,16 +12,24 @@ import {
   DialogContentText,
   DialogActions,
   IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
+import { signup } from "../api/api-auth.js";
 import { styles } from "../styles/styles.js";
 import Logo from "../static/logo.jpg";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     name: "",
     email: "",
     password: "",
+    role: "developer",
     error: "",
   });
   const [open, setOpen] = useState(false);
@@ -30,30 +38,39 @@ export default function Signup() {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    navigate('/signin');
+  };
 
   const clickSubmit = () => {
     const user = {
       name: values.name || undefined,
       email: values.email || undefined,
       password: values.password || undefined,
+      role: values.role || undefined,
     };
 
-    // Simulating API call
-    setTimeout(() => {
-      if (!user.name || !user.email || !user.password) {
-        setValues({ ...values, error: "All fields are required" });
+    if (!user.name || !user.email || !user.password) {
+      setValues({ ...values, error: "All fields are required" });
+      return;
+    }
+
+    signup(user).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error });
       } else {
         setValues({ ...values, error: "" });
         setOpen(true);
       }
-    }, 500);
+    });
   };
 
   return (
     <Box sx={styles.container}>
       {/* Close button */}
       <IconButton
+        onClick={() => navigate('/')}
         sx={{
           position: "absolute",
           top: 24,
@@ -121,6 +138,19 @@ export default function Signup() {
             sx={styles.textField}
           />
 
+          {/* Role selection */}
+          <FormControl fullWidth sx={styles.textField}>
+            <InputLabel>Role</InputLabel>
+            <Select
+              value={values.role}
+              label="Role"
+              onChange={handleChange("role")}
+            >
+              <MenuItem value="developer">Developer</MenuItem>
+              <MenuItem value="company">Company</MenuItem>
+            </Select>
+          </FormControl>
+
           {/* Error message */}
           {values.error && (
             <Typography color="error" sx={styles.errorText}>
@@ -175,7 +205,7 @@ export default function Signup() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            New account successfully created.
+            New account successfully created. Please sign in to continue.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
