@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Profile from './pages/profile';
+import Profile from './pages/Profile';
 import MyPortfolio from './pages/MyPortfolio';
 import theme from './theme';
 
