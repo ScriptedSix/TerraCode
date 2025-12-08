@@ -12,7 +12,7 @@ async function runLighthouse() {
     port: chrome.port,
   };
 
-  const runnerResult = await lighthouse('http://localhost:5173', options);
+  const runnerResult = await lighthouse('http://35.183.20.75:5173', options);
 
   // Save the report
   const reportHtml = runnerResult.report;
