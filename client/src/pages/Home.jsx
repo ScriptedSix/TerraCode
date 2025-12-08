@@ -41,7 +41,7 @@ const Home = () => {
                 textShadow: '2px 2px 4px rgba(255,255,255,0.8)',
               }}
             >
-              Hi I'm :
+              Welcome to TerraCode:
             </Typography>
             
             <Typography
