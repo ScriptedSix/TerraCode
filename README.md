@@ -315,16 +315,16 @@ All UI mockups and design assets for TerraCode are stored in the `designs/` dire
 ![Sign Up](./designs/ui-screens/SignUp.png)
 
 ### 👤 User Profile
-![Profile](./designs/ui-screens/Profile(1).png)
+![Profile](./designs/ui-screens/Profile1.png)
 
 ### 👤 Public Profile
-![Profile](./designs/ui-screens/Profile(2).png)
+![Profile](./designs/ui-screens/Profile2.png)
 
 ### 🏠 Landing Page
-![Landing](./designs/ui-screens/Landing Page.png)
+![Landing](./designs/ui-screens/LandingPage.png)
 
 ### 💼 Job Posting
-![Job Posting](./designs/ui-screens/Job Posting.png)
+![Job Posting](./designs/ui-screens/JobPosting.png)
 
 
 - Jihna Park - Tester [GitHub](https://github.com/jpark290)
